@@ -1,0 +1,9 @@
+/src/
+/test/
+babel.config.js
+prettier.config.js
+package-lock.json
+webpack.common.js
+webpack.dev.js
+webpack.prod.js
+/.*
