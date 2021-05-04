@@ -10,7 +10,7 @@ import { Deep, replaceValueDeep } from 'structural-comparison'
  * @param {Deep} deep
  * @returns {Observable}
  */
-export function deepCombineLatest(deep = new Deep()) {
+export function deepCombineLatest(deep) {
     return (
         combineLatest(deep.getValues())
         |> map(values =>
