@@ -34,7 +34,7 @@
   "name": "deep-rxjs",
   "description": "",
   "main": "dist/deep-rxjs.js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "cuishengli<34696643@qq.com>",
   "keywords": [],
   "repository": {
