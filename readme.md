@@ -1,5 +1,7 @@
 A js library of rxjs.
 
+* behaviorSubjectDeep
+
 * deepCombineLatest
 
 * deepMerge
@@ -8,8 +10,10 @@ A js library of rxjs.
 
 * ObservableArray
 
+* observableDeep
+
 * pickBehaviorSubject
 
 * restore
 
-
+see also documents in `docs` folder.

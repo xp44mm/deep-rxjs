@@ -57,9 +57,9 @@ test('pick observable array ignore some', done => {
         a: new ObservableArray()
     }
 
-    source.a.insert(new BehaviorSubject(0))
-    source.a.insert(new BehaviorSubject(1))
-    source.a.insert(new BehaviorSubject(2))
+    source.a.insertBefore(new BehaviorSubject(0))
+    source.a.insertBefore(new BehaviorSubject(1))
+    source.a.insertBefore(new BehaviorSubject(2))
 
     source.a[1].next('1')
     let y = pickBehaviorSubject(source)
@@ -68,6 +68,19 @@ test('pick observable array ignore some', done => {
     done()
 })
 
+test('object pickeys', done => {
+    let source = {
+        a: new BehaviorSubject(0),
+        b: new BehaviorSubject(0),
+        pickeys() {
+            return ['a']
+        }
+    }
+    let y = pickBehaviorSubject(source)
+    expect(y).toEqual({ a: 0 })
+
+    done()
+})
 
 
 

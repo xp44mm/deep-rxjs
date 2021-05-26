@@ -3,30 +3,23 @@ import { deepMerge } from './deepMerge'
 
 test('test deepMerge', done => {
     const source = {
-        wetAir: new BehaviorSubject(true),
-        oxiair: new BehaviorSubject(true),
+        a: new BehaviorSubject(true),
+        b: new BehaviorSubject(true),
         x: { c: [new BehaviorSubject(true)] },
     }
-
     let states = []
-
-
     deepMerge(source)
         |> (obs => obs.subscribe(data => { states.push(data) }))
-
-    source.wetAir.next(false)
-    source.oxiair.next(false)
+    source.a.next(false)
+    source.b.next(false)
     source.x.c[0].next(false)
-
     expect(states).toEqual([
-        [['oxiair'], true],
-        [['wetAir'], true],
+        [['a'], true],
+        [['b'], true],
         [['x', 'c', 0], true],
-
-        [['wetAir'], false],
-        [['oxiair'], false],
+        [['a'], false],
+        [['b'], false],
         [['x', 'c', 0], false],
     ])
-
     done()
 })

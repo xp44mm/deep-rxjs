@@ -7,35 +7,35 @@ export class ObservableArray extends Array {
         if (args.length > 0) {
             throw new Error('不能有参数')
         }
-        super(...args)
+        super()
 
         this.action = new Subject()
 
-        this.insert$ = this.action
-            |> filter(([action]) => action === 'insert')
+        this.insertBefore$ = this.action
+            |> filter(([action]) => action === 'insertBefore')
             |> map(([_, item, index]) => [item, index])
 
-        this.remove$ = this.action
-            |> filter(([action]) => action === 'remove')
+        this.removeChild$ = this.action
+            |> filter(([action]) => action === 'removeChild')
             |> map(([_, index]) => index)
 
-        this.replace$ = this.action
-            |> filter(([action]) => action === 'replace')
+        this.replaceChild$ = this.action
+            |> filter(([action]) => action === 'replaceChild')
             |> map(([_, item, index]) => [item, index])
     }
 
-    insert(item, index = [...this].length) {
+    insertBefore(item, index = this.length) {
         arrayInsert(this, item, index)
-        this.action.next(['insert', item, index])
+        this.action.next(['insertBefore', item, index])
     }
 
-    remove(index = [...this].length - 1) {
+    removeChild(index = this.length - 1) {
         arrayRemove(this, index)
-        this.action.next(['remove', index])
+        this.action.next(['removeChild', index])
     }
 
-    replace(item, index) {
+    replaceChild(item, index) {
         this[index] = item
-        this.action.next(['replace', item, index])
+        this.action.next(['replaceChild', item, index])
     }
 }

@@ -1,6 +1,6 @@
 ﻿import { isObservable, Subscription } from 'rxjs'
 
 export function isRxType(obj) {
-    return isObservable(obj) ||
-        obj instanceof Subscription
+    return obj && typeof obj === 'object' &&
+        (isObservable(obj) || obj instanceof Subscription)
 }

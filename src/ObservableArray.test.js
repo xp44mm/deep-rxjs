@@ -5,46 +5,44 @@ test('ObservableArray is Array', () => {
     expect(Array.isArray(arr)).toEqual(true)
 })
 
-test('test insert', done => {
+test('test insertBefore', done => {
     let states = []
     let arr = new ObservableArray()
 
-    arr.insert$.subscribe(([item, index]) => { states.push(['insert', item, index]) })
-    arr.insert(4)
-    arr.insert(3)
-    arr.insert(2, 0)
+    arr.insertBefore$.subscribe(([item, index]) => { states.push(['insertBefore', item, index]) })
+    arr.insertBefore(4)
+    arr.insertBefore(3)
+    arr.insertBefore(2, 0)
 
     expect(states).toEqual([
-        ['insert', 4, 0],
-        ['insert', 3, 1],
-        ['insert', 2, 0],
+        ['insertBefore', 4, 0],
+        ['insertBefore', 3, 1],
+        ['insertBefore', 2, 0],
     ])
 
     expect([...arr]).toEqual([2, 4, 3])
-
+    expect(arr.length).toEqual(3)
 
     done()
 })
 
-test('test remove', done => {
+test('test removeChild', done => {
     let states = []
     let arr = new ObservableArray()
+    arr.removeChild$.subscribe(index => { states.push(['removeChild', index]) })
 
-    //arr.insert$.subscribe(([item, index]) => { states.push(['insert', item, index]) })
-    arr.remove$.subscribe(index => { states.push(['remove', index]) })
-
-    arr.insert(4)
-    arr.insert(3)
+    arr.insertBefore(4)
+    arr.insertBefore(3)
 
     expect([...arr]).toEqual([4, 3])
-
-    arr.remove()
-    arr.remove(0)
-
+    expect(arr.length).toEqual(2)
+    arr.removeChild()
+    arr.removeChild(0)
+    expect(arr.length).toEqual(0)
 
     expect(states).toEqual([
-        ['remove', 1],
-        ['remove', 0],
+        ['removeChild', 1],
+        ['removeChild', 0],
     ])
 
     expect([...arr]).toEqual([])
@@ -52,26 +50,71 @@ test('test remove', done => {
     done()
 })
 
+test('test default argument', done => {
+    let arr = new ObservableArray()
 
-test('test replace', done => {
+    arr.insertBefore(4)
+    arr.insertBefore(3)
+
+    expect([...arr]).toEqual([4, 3])
+    arr.insertBefore(2)
+    expect([...arr]).toEqual([4, 3, 2])
+
+    arr.removeChild()
+    expect([...arr]).toEqual([4, 3])
+
+    arr.removeChild()
+    expect([...arr]).toEqual([4])
+
+
+    done()
+})
+
+
+
+
+test('test replaceChild', done => {
     let states = []
     let arr = new ObservableArray()
 
-    arr.replace$.subscribe(([item, index]) => { states.push(['replace', item, index]) })
+    arr.replaceChild$.subscribe(([item, index]) => { states.push(['replaceChild', item, index]) })
 
-    arr.insert(4)
-    arr.insert(3)
-    arr.insert(2, 0)
+    arr.insertBefore(4)
+    arr.insertBefore(3)
+    arr.insertBefore(2, 0)
 
     expect([...arr]).toEqual([2, 4, 3])
 
-    arr.replace('4', 1)
+    arr.replaceChild('4', 1)
 
     expect(states).toEqual([
-        ['replace', '4', 1],
+        ['replaceChild', '4', 1],
     ])
 
     expect([...arr]).toEqual([2, '4', 3])
 
     done()
 })
+
+test('test action', done => {
+    let states = []
+    let arr = new ObservableArray()
+
+    arr.action.subscribe(a => { states.push(a) })
+
+    arr.insertBefore('a')
+    arr.replaceChild('b', 0)
+    arr.removeChild()
+
+    expect(states).toEqual([
+        ['insertBefore', 'a', 0],
+        ['replaceChild', 'b', 0],
+        ['removeChild', 0],
+
+    ])
+
+    expect([...arr]).toEqual([])
+
+    done()
+})
+

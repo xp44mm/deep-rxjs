@@ -26,7 +26,7 @@ const loop = (o, src) => {
             Array.from({ length: diffcount })
                 .map((e, i) => len - 1 - i)
                 .forEach((last) => {
-                    o.remove(last)
+                    o.removeChild(last)
                 })
         } else if (diffcount < 0) {
             //補短
@@ -45,14 +45,17 @@ const loop = (o, src) => {
     } else if (o instanceof Array) {
         //普通数组,元组
         let indexes = o.length < src.length ? o : src
-        //src多余忽略尾部，不足的无操作noop
+        //src多余忽略尾部，不足的无操作noop，
         for (let i of indexes.keys()) {
+            // todo: 当o[i]为不可设置时抛出异常？
             loop(o[i], src[i])
         }
     } else if (typeof o === 'object') {
         //普通对象成员递归
         Object.entries(o)
-            .filter(([k, v]) => k in src)
-            .forEach(([k, v]) => { loop(v, src[k]) })
+            .filter(([k, v]) => k in src) //交集
+            .forEach(([k, v]) => {
+                loop(v, src[k])
+            })
     }
 }

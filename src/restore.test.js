@@ -32,6 +32,30 @@ test('array less', done => {
     done()
 })
 
+test('nested happy', done => {
+    let model = {
+        title: new BehaviorSubject('compiler'),
+        keywords: [
+            new BehaviorSubject('lex'),
+            new BehaviorSubject('yacc'),
+        ]
+    }
+    let src = {
+        title: 'lang',
+        keywords: [
+            'js',
+            'fs',
+        ]
+    }
+    restore(model, src)
+
+    expect(model.title.value).toEqual(src.title)
+    expect(model.keywords[0].value).toEqual(src.keywords[0])
+    expect(model.keywords[1].value).toEqual(src.keywords[1])
+    done()
+})
+
+
 test('array too much', done => {
     let source = [
         new BehaviorSubject(0),
@@ -57,9 +81,9 @@ test('object ignore member', done => {
 test('observable array happy', done => {
     let source = new ObservableArray()
 
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
 
     restore(source, [1, 2, 3])
     let y = pickBehaviorSubject(source)
@@ -70,10 +94,10 @@ test('observable array happy', done => {
 test('observable array cut off', done => {
     let source = new ObservableArray()
 
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
+    source.insertBefore(new BehaviorSubject(0))
 
     restore(source, [1, 2, 3])
     let y = pickBehaviorSubject(source)
@@ -83,15 +107,17 @@ test('observable array cut off', done => {
 
 
 test('observable array complement', done => {
-    let source = new ObservableArray()
-    source.appendChild = (i) => source.insert(new BehaviorSubject(0), i)
+    let model = new ObservableArray()
+    model.appendChild = (i) => model.insertBefore(new BehaviorSubject(0), i)
 
-    source.insert(new BehaviorSubject(0))
-    source.insert(new BehaviorSubject(0))
+    model.insertBefore(new BehaviorSubject(0))
 
-    restore(source, [1, 2, 3])
-    let y = pickBehaviorSubject(source)
-    expect(y).toEqual([1, 2, 3])
+    let src = [1, 2, 3]
+    restore(model, src)
+
+    expect(model[0].value).toEqual(src[0])
+    expect(model[1].value).toEqual(src[1])
+    expect(model[2].value).toEqual(src[2])
     done()
 })
 

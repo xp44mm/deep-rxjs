@@ -1,6 +1,6 @@
-﻿import { BehaviorSubject } from "rxjs";
-import { Deep, objectToDeep } from "structural-comparison";
-import { isRxType } from "./isRxType";
+﻿import { BehaviorSubject } from 'rxjs'
+import { Deep, objectToDeep } from 'structural-comparison'
+import { isRxType } from './isRxType'
 
 export function behaviorSubjectDeep(obj) {
     let deep = objectToDeep(obj, isRxType)

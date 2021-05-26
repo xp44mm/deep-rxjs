@@ -6,5 +6,3 @@ export { ObservableArray } from './ObservableArray'
 export { observableDeep } from './observableDeep'
 export { pickBehaviorSubject } from './pickBehaviorSubject'
 export { restore } from './restore'
-
-

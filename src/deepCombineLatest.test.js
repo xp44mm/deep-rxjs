@@ -1,6 +1,6 @@
 ﻿import { BehaviorSubject } from 'rxjs'
 import { map, take } from 'rxjs/operators'
-import { objectToDeep } from 'structural-comparison'
+import { behaviorSubjectDeep } from './behaviorSubjectDeep'
 import { deepCombineLatest } from './deepCombineLatest'
 
 test('test deepCombineLatest', done => {
@@ -16,17 +16,18 @@ test('test deepCombineLatest', done => {
         ],
     }
 
-    let deep = objectToDeep(observables, (v, k, p) => v instanceof BehaviorSubject)
+    let e = { a: 0, b: 0, c: [0, 0, { e: 0 }] }
+
+    let deep = behaviorSubjectDeep(observables)
 
     deepCombineLatest(deep)
-        |> map(deep => deep.toObject())
         |> take(1)
+        |> map(deep => deep.toObject())
         |> (obs =>
-            obs.subscribe(
-                data => {
-                    expect(data).toEqual({ a: 0, b: 0, c: [0, 0, { e: 0 }] })
+            obs.subscribe({
+                next: data => {
+                    expect(data).toEqual(e)
                 },
-                null,
-                done
-            ))
+                complete: done
+            }))
 })
