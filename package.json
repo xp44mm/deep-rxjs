@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "rxjs": "7.1.0",
-    "structural-comparison": "1.0.7"
+    "structural-comparison": "1.0.9"
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
@@ -10,18 +10,18 @@
     "@babel/plugin-proposal-export-namespace-from": "7.14.2",
     "@babel/plugin-proposal-pipeline-operator": "7.12.13",
     "@babel/plugin-syntax-bigint": "7.8.3",
-    "@babel/preset-env": "7.14.2",
+    "@babel/preset-env": "7.14.4",
     "@webpack-cli/serve": "1.4.0",
-    "babel-jest": "27.0.1",
+    "babel-jest": "27.0.2",
     "babel-loader": "8.2.2",
     "clean-webpack-plugin": "3.0.0",
-    "core-js": "3.13.0",
+    "core-js": "3.14.0",
     "css-loader": "5.2.6",
     "html-loader": "2.1.2",
     "html-webpack-plugin": "5.3.1",
-    "jest": "27.0.1",
+    "jest": "27.0.4",
     "style-loader": "2.0.0",
-    "webpack": "5.37.1",
+    "webpack": "5.38.1",
     "webpack-cli": "4.7.0",
     "webpack-dev-server": "3.11.2",
     "webpack-merge": "5.7.3"
@@ -34,7 +34,7 @@
   "name": "deep-rxjs",
   "description": "",
   "main": "dist/deep-rxjs.js",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "author": "cuishengli<34696643@qq.com>",
   "keywords": [],
   "repository": {

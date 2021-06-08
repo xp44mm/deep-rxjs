@@ -1,5 +1,5 @@
 ﻿import { BehaviorSubject, isObservable } from 'rxjs'
-import { pickObject } from 'structural-comparison'
+import { intersectObject } from 'structural-comparison'
 import { isRxType } from './isRxType'
 import { ObservableArray } from './ObservableArray'
 
@@ -48,7 +48,7 @@ const loop = (value, key, parent) => {
             return [[key, v]]
         }
     } else if ('pickeys' in value) {
-        return loop(pickObject(value, value.pickeys()), key, parent)
+        return loop(intersectObject(value, value.pickeys()), key, parent)
     } else {
         let entries = Object.entries(value)
         if (entries.length === 0) {

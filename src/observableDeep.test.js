@@ -1,5 +1,5 @@
 import { of } from 'rxjs'
-import { extractProperty } from 'structural-comparison'
+import { pluckProperty } from 'structural-comparison'
 import { observableDeep } from './observableDeep'
 
 test('test observableDeep', () => {
@@ -15,6 +15,6 @@ test('test observableDeep', () => {
     let keys = [['a'], ['c', 0], ['c', 1]]
     expect(deep.keys).toEqual(keys)
 
-    let entries = keys.map(k => [k, extractProperty(obj, k)])
+    let entries = keys.map(k => [k, pluckProperty(obj, k)])
     expect(deep.entries).toEqual(entries)
 })

@@ -1,5 +1,5 @@
 ﻿import { BehaviorSubject } from 'rxjs'
-import { extractProperty } from 'structural-comparison'
+import { pluckProperty } from 'structural-comparison'
 import { behaviorSubjectDeep } from './behaviorSubjectDeep'
 
 test('test behaviorSubjectDeep', () => {
@@ -14,7 +14,7 @@ test('test behaviorSubjectDeep', () => {
         ['c', 0],
         ['c', 1],
     ]
-    let entries = keys.map(k => [k, extractProperty(obj, k)])
+    let entries = keys.map(k => [k, pluckProperty(obj, k)])
     let deep = behaviorSubjectDeep(obj)
 
     expect(deep.keys).toEqual(keys)

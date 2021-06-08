@@ -1,17 +1,16 @@
-﻿import { from, isObservable, Observable } from 'rxjs'
+﻿import { from, Observable } from 'rxjs'
 import { map, mergeMap } from 'rxjs/operators'
-import { Deep, objectToDeep } from 'structural-comparison'
-import { isRxType } from './isRxType'
+import { Deep } from 'structural-comparison'
 
 /**
  * 追蹤對象是哪個屬性發生了變化。
- * @param {Deep} model
+ * @param {Deep} deep
  * @returns {Observable}
  */
-export function deepMerge(model) {
-    let deep = objectToDeep(model, v => isRxType(v))
-        .filter(([keyPath, value]) => isObservable(value))
-
+export function deepMerge(deep) {
     return from(deep.entries)
-        |> mergeMap(([keyPath, value]) => value |> map(value => [keyPath, value]))
+        |> mergeMap(([keyPath, value]) =>
+            value
+            |> map(value => [keyPath, value])
+        )
 }

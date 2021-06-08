@@ -2,7 +2,7 @@
 
 ## isRxType
 
-签名
+语法
 
 ```js
 import { restore } from 'deep-rxjs'
@@ -13,14 +13,14 @@ let bool = isRxType(obj)
 
 ## pickBehaviorSubject
 
-签名
+语法
 
 ```js
 import { pickBehaviorSubject } from 'deep-rxjs'
 let obj = pickBehaviorSubject(model)
 ```
 
-`BehaviorSubject`表示一个状态，并且当状态变化时，会向下游发出通知。`BhaviorSubject`表示的状态经常被组织好，放在一个结构化的对象中，这个对象常常用作为数据模型。`pickBehaviorSubject`用来读取数据模型model的最新状态值。
+`BehaviorSubject`是rxjs库的一个重要类型，它表示一个状态，并且当状态变化时，会向下游发出通知。`BhaviorSubject`表示的状态经常被组织好，放在一个结构化的对象中，这个对象常常用作为数据模型。`pickBehaviorSubject`用来读取数据模型model的最新状态值。
 
 > `pickBehaviorSubject`是`restore`的反函数。
 
@@ -67,7 +67,7 @@ test('object pickeys', done => {
 
 ## restore
 
-签名
+语法
 
 ```js
 import { restore } from 'deep-rxjs'
@@ -202,81 +202,3 @@ test('test behaviorSubjectDeep', () => {
 })
 ```
 
-## deepCombineLatest
-
-```js
-deepCombineLatest(deep)
-```
-
-同combineLatest操作符，不同於合并數組，本操作合并的為Deep對象。deep的每个值都是Observable，每当有Observable发射值，取deep每个值的最新值，保持deep的形状，创造新的Observable。
-
-```js
-import { BehaviorSubject } from 'rxjs'
-import { map, take } from 'rxjs/operators'
-import { behaviorSubjectDeep } from 'deep-rxjs'
-import { deepCombineLatest } from 'deep-rxjs'
-
-test('test deepCombineLatest', done => {
-    let observables = {
-        a: new BehaviorSubject(0),
-        b: new BehaviorSubject(0),
-        c: [
-            new BehaviorSubject(0),
-            new BehaviorSubject(0),
-            {
-                e: new BehaviorSubject(0),
-            },
-        ],
-    }
-    let e = { a: 0, b: 0, c: [0, 0, { e: 0 }] }
-    let deep = behaviorSubjectDeep(observables)
-    deepCombineLatest(deep)
-        |> take(1)
-        |> map(deep => deep.toObject())
-        |> (obs =>
-            obs.subscribe({
-                next: data => {
-                    expect(data).toEqual(e)
-                },
-                complete: done
-            }))
-})
-```
-
-## deepMerge
-
-```js
-deepMerge(model)
-```
-
-model是包含observable属性的容器对象。每当model中的observable发射值时，订阅者会知道发射属性的路径，并发射值。
-
-```js
-import { BehaviorSubject } from 'rxjs'
-import { deepMerge } from 'deep-rxjs'
-
-test('test deepMerge', done => {
-    const source = {
-        a: new BehaviorSubject(true),
-        b: new BehaviorSubject(true),
-        x: { c: [new BehaviorSubject(true)] },
-    }
-    let states = []
-    deepMerge(source)
-        |> (obs => obs.subscribe(data => { states.push(data) }))
-    source.a.next(false)
-    source.b.next(false)
-    source.x.c[0].next(false)
-    expect(states).toEqual([
-        [['a'], true],
-        [['b'], true],
-        [['x', 'c', 0], true],
-        [['a'], false],
-        [['b'], false],
-        [['x', 'c', 0], false],
-    ])
-    done()
-})
-```
-
-状态数组中，前三项为真，是初始化时发射的值，后三项是next改变的值。

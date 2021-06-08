@@ -1,4 +1,4 @@
-A js library of rxjs.
+A js function library of rxjs.
 
 * behaviorSubjectDeep
 
